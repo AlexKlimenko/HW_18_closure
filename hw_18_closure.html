@@ -39,189 +39,120 @@
 				name = name + '';
 				return name.toUpperCase();
 			}
-			var name = 'Vasiliy';
+			
 			var userName = 'Ivan';
 			console.log(test());
 			
+			//вернёт IVAN, т.к. переменной userName нет в теле test(), он ее находит в глобальной области
+			// test() вызывает getBigName(name), передавая ей в качестве аргумента 'Ivan' 
+			//getBigName(name) возвращает функции test() Ivan.toUpperCase
 			
 ///////////////////////////////////////////////////////////////////////////////////////////			
 			console.log("3");
 
-			function getName() {
+			var food = 'cucumber';
 
-				return this.name;
+			(function() {
+				var food = 'bread';
+				getFood();
+			})();
+
+			function getFood() {
+				console.log(food);
 			}
 
-			var user = {
-				name: "Abraham",
-				getName: getName
-			};
-			// getUserName = function() {...}
-			console.log(user.getName());
+			// аналогично прошлой задаче
+			// выведет в консоль  cucumber, т.к. переменной food нет в теле getFood(), он ее находит в глобальной области
+			
 
 
-//////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-			console.log("4");
-
-			function incHeight() {
-
-				return this.height += 1;
-			}
-
-			var object = {
-				height: 10,
-				incHeight: incHeight
-			};
-
-			console.log(`object.height is ${object.height}`);
-			console.log(`object.incHeight is ${object.incHeight()}`);
-			console.log(`object.incHeight_ is ${object.incHeight()}`);
-
-
-///////////////////////////////////////////////////////////////////////////////////////////			
-
-
-			console.log("5");
-
-			const numerator = {
-				value: 1,
-				double: function() {
-					this.value *= 2;
-
-					return this;
-				},
-				plusOne: function() {
-					this.value += 1;
-
-					return this;
-				},
-				minusOne: function() {
-					this.value -= 1;
-
-					return this;
-				}
-			};
-
-			numerator.double()
-					 .plusOne()
-					 .plusOne()
-					 .minusOne();
-			console.log(numerator.value);
-
-
-///////////////////////////////////////////////////////////////////////////////////////////			
-
-
-			console.log("6");
-
-			var user = {
-				name: "Abraham"
-			},
-			otherUser = {
-				name: "John",
-				getName: function() {
-
-					return this.name;
-				}
-			}
-
-			// user.getName; // undefined//////////////
-			// в объекте user не определено свойство getName, поэтому выводит undefined
-
-			// user.getName = otherUser.getName//////////
-			//произошло одалживание метода getName объекта otherUser объекту user, поэтому теперь:
-			// user.getName(); // "Abraham"
-			// otherUser.getName(); // "John"
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-
-			console.log("this. Задачи");
+			console.log("Замыкания. Задачи");
 
 
 			console.log("1)");
 
 
-			function getList() {
+			var dollar,
+				getDollar;
 
-				return this.list;
-			}
+				(function() {
+					var dollar = 0;
+					getDollar = function() {
+						return dollar;
+					}
+				}());
 
-			let users = {
-				length: 4,
-				list: ["Abraham", "James", "John", "Steven"]
-			};
+			dollar = 30;
+			console.log(getDollar());
+			// getDollar() вернет 0, т.к. сразу не найдет переменную dollar в своем ЛО, и найдет ее же в ЛО родителя
+			// т.е. var dollar = 0;
 
-			// getList()// undefined - у глобального объекта window нет свойства list
-
-			users.getList = getList;
-
-			// users.getList()// значение свойства list, потому что объекту users переопределили (добавили) метод getList
-
-			// getList.call(users)// значение свойства list, передали контекст  вызова с помощью call
-
+			
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 			console.log("2)");
 
 
-			function total() {
+			var greet = 'Hello';
 
-				return parseFloat(this.price) * this.num;
-			}
+			(function() {
+				var text = "World";
+				console.log(greet + text);
+			}());
+			// console.log(greet + text);
 
-			var prod = {
-				price: "5$",
-				num: 3,
-				total: total
-			};
+			// при первом выводе в консоль выведется HelloWorld, т.к. функция найдет переменную text в своем теле, 
+			//а переменную greet (не найдя в своем ЛО), найдет в ЛО родителя - глобальной области
 
-			console.log(`${prod.total()} $`);
-
-
+			// при втором вызове консоля будет ошибка, т.к. переменная text в таком случае не видна (локальна для ф-ции)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 		console.log("3)");
 
+ 
+		function minus(a) {
+			var result = function(b) {
+				var a1,
+					b1;
+				a1 = a || 0;
+				b1 = b || 0;
 
-		function total() {
-
-				return parseFloat(this.price) * this.num;
-			}
-
-
-		var prod1 = {
-				price: "5$",
-				num: 3,
-				total: total
-			},
-			det = {
-				price: "2$",
-				num: 600
+				return a1 - b1;
 			};
+			
+			return result;
+		}
 
-		det.total = prod1.total;
-		console.log(`${det.total()} $`);
+		console.log(minus()(6));
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
 		console.log("4)");
 
-		let sizes = {
-			width: 5,
-			height: 10
-		},
-			getSquare1 = function() {
+		function multiMaker(arg) {
+			var firstMultiplier = arg,
+				result = function(secondMultiplier) {
+					firstMultiplier *= secondMultiplier;
 
-				return this.width * this.height;
-			};
+				return firstMultiplier;
+				}
+			return result;	
+		}
 
-		var a = getSquare1.call(sizes);
-		console.log(a);
+		var multiply = multiMaker(2);
+
+		console.log(multiply(2));
+		console.log(multiply(1));
+		console.log(multiply(3));
+		console.log(multiply(10));
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
