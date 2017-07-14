@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>HW_1_JS</title>
+	</head>
+	<body>
+		
+		<script>
+			console.log("Лексическое окружение. Задачи");
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+			console.log("1");
+
+			console.log(getBigName(userName));
+
+			function getBigName(name) {
+				name = name + '';
+				return name.toUpperCase();
+			}
+			
+			var userName = 'Ivan';
+
+			//вернёт UNDEFINED, т.к. переменная userName объявлена после вызова функции,
+			// в тело ф-ции передается undefined, а возвращается undefined.toUpperCase
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+			console.log("2");
+
+			function test() {
+				var name = 'Vasiliy';
+				return getBigName(userName);
+			}
+
+			function getBigName(name) {
+				name = name + '';
+				return name.toUpperCase();
+			}
+			var name = 'Vasiliy';
+			var userName = 'Ivan';
+			console.log(test());
+			
+			
+///////////////////////////////////////////////////////////////////////////////////////////			
+			console.log("3");
+
+			function getName() {
+
+				return this.name;
+			}
+
+			var user = {
+				name: "Abraham",
+				getName: getName
+			};
+			// getUserName = function() {...}
+			console.log(user.getName());
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+			console.log("4");
+
+			function incHeight() {
+
+				return this.height += 1;
+			}
+
+			var object = {
+				height: 10,
+				incHeight: incHeight
+			};
+
+			console.log(`object.height is ${object.height}`);
+			console.log(`object.incHeight is ${object.incHeight()}`);
+			console.log(`object.incHeight_ is ${object.incHeight()}`);
+
+
+///////////////////////////////////////////////////////////////////////////////////////////			
+
+
+			console.log("5");
+
+			const numerator = {
+				value: 1,
+				double: function() {
+					this.value *= 2;
+
+					return this;
+				},
+				plusOne: function() {
+					this.value += 1;
+
+					return this;
+				},
+				minusOne: function() {
+					this.value -= 1;
+
+					return this;
+				}
+			};
+
+			numerator.double()
+					 .plusOne()
+					 .plusOne()
+					 .minusOne();
+			console.log(numerator.value);
+
+
+///////////////////////////////////////////////////////////////////////////////////////////			
+
+
+			console.log("6");
+
+			var user = {
+				name: "Abraham"
+			},
+			otherUser = {
+				name: "John",
+				getName: function() {
+
+					return this.name;
+				}
+			}
+
+			// user.getName; // undefined//////////////
+			// в объекте user не определено свойство getName, поэтому выводит undefined
+
+			// user.getName = otherUser.getName//////////
+			//произошло одалживание метода getName объекта otherUser объекту user, поэтому теперь:
+			// user.getName(); // "Abraham"
+			// otherUser.getName(); // "John"
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+			console.log("this. Задачи");
+
+
+			console.log("1)");
+
+
+			function getList() {
+
+				return this.list;
+			}
+
+			let users = {
+				length: 4,
+				list: ["Abraham", "James", "John", "Steven"]
+			};
+
+			// getList()// undefined - у глобального объекта window нет свойства list
+
+			users.getList = getList;
+
+			// users.getList()// значение свойства list, потому что объекту users переопределили (добавили) метод getList
+
+			// getList.call(users)// значение свойства list, передали контекст  вызова с помощью call
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+			console.log("2)");
+
+
+			function total() {
+
+				return parseFloat(this.price) * this.num;
+			}
+
+			var prod = {
+				price: "5$",
+				num: 3,
+				total: total
+			};
+
+			console.log(`${prod.total()} $`);
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		console.log("3)");
+
+
+		function total() {
+
+				return parseFloat(this.price) * this.num;
+			}
+
+
+		var prod1 = {
+				price: "5$",
+				num: 3,
+				total: total
+			},
+			det = {
+				price: "2$",
+				num: 600
+			};
+
+		det.total = prod1.total;
+		console.log(`${det.total()} $`);
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		console.log("4)");
+
+		let sizes = {
+			width: 5,
+			height: 10
+		},
+			getSquare1 = function() {
+
+				return this.width * this.height;
+			};
+
+		var a = getSquare1.call(sizes);
+		console.log(a);
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+		console.log("5)");
+
+		let numbers = [4,12,0,10,-2,4];
+
+		var b = Math.min.apply(null, numbers);
+		console.log(b);
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		console.log("6)");
+
+		const element = {
+			height: "15px",
+			marginTop: "5px",
+			marginBottom: "5px",
+			getFullHeight: function() {
+
+				return parseFloat(this.height) + 
+					   parseFloat(this.marginTop) + 
+					   parseFloat(this.marginBottom) +
+					   'px';
+			}
+		};
+
+		console.log(element.getFullHeight());
+
+		const block = {
+			height: "5px",
+			marginTop: "3px",
+			marginBottom: "3px",
+		};
+
+		block.getFullHeight = element.getFullHeight;
+
+		console.log(block.getFullHeight());
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		console.log("7)");
+
+		let element1 = {
+			height: 25,
+			getHeight: function() {
+
+				return this.height;
+			}
+		},
+
+			getElementHeight = element1.getHeight.bind(element1);
+
+			console.log(getElementHeight());
+
+
+
+</script>
+</body>
