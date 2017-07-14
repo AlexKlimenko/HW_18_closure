@@ -158,57 +158,49 @@
 
 		console.log("5)");
 
-		let numbers = [4,12,0,10,-2,4];
+		var moduleString = (function() {
+			var string;
 
-		var b = Math.min.apply(null, numbers);
-		console.log(b);
+			function setString(value) {
+				value == undefined ? string = "" :
+				value != isNaN     ? string = value.toString() :
+								     string = value;
+
+				return string;
+			}
+
+			function getString() {
+
+				return string;
+			}
+
+			function getStringLength() {
+
+				return string.length;
+			}
+
+			function getReverseString() {
+				var arr = string.split('');
+				arr.reverse();
+				
+				return arr.join('');
+			}
+
+			return {
+				setString,
+				getString,
+				getStringLength,
+				getReverseString
+			};
+		}());
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
 		console.log("6)");
 
-		const element = {
-			height: "15px",
-			marginTop: "5px",
-			marginBottom: "5px",
-			getFullHeight: function() {
+		
 
-				return parseFloat(this.height) + 
-					   parseFloat(this.marginTop) + 
-					   parseFloat(this.marginBottom) +
-					   'px';
-			}
-		};
-
-		console.log(element.getFullHeight());
-
-		const block = {
-			height: "5px",
-			marginTop: "3px",
-			marginBottom: "3px",
-		};
-
-		block.getFullHeight = element.getFullHeight;
-
-		console.log(block.getFullHeight());
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		console.log("7)");
-
-		let element1 = {
-			height: 25,
-			getHeight: function() {
-
-				return this.height;
-			}
-		},
-
-			getElementHeight = element1.getHeight.bind(element1);
-
-			console.log(getElementHeight());
 
 
 
