@@ -199,10 +199,72 @@
 
 		console.log("6)");
 
-		
+		var moduleCalculator = (function() {
+			var result;
+
+			function setValue(value) {
+				value != isNaN ? result = value :
+								 result = 'Input the number, pls';
+
+				return this;
+			}
+
+			function sumValue(value) {
+				result += value;
+
+				return this;
+			}
+
+			function mulValue(value) {
+				result *= value;
+
+				return this;
+			}
+
+			function deductValue(value) {
+				result -= value;
+
+				return this;
+			}
+
+			function divis(value) {
+				result /= value;
+
+				return this;
+			}
+
+			function powValue(value) {
+				result = Math.pow(result, value);
+
+				return this;
+			}
+
+			function getValue() {
+
+				return result.toFixed(2);
+			}
+
+			return {
+				setValue,
+				sumValue,
+				mulValue,
+				deductValue,
+				divis,
+				powValue,
+				getValue
+			};
+		}());
 
 
+		console.log(moduleCalculator.setValue(5)
+									.sumValue(6)
+									.mulValue(3)
+									.deductValue(4)
+									.divis(4)
+									.powValue(3)
+									.getValue());
 
+									
 
 </script>
 </body>
